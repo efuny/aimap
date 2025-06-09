@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张掖旅行需求调查问卷</title>
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-100-M/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #5c6ac4;
+            --secondary-color: #f87171;
+            --accent-color: #fbbf24;
+            --text-color: #1f2937;
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #4c5aa0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #ef4444;
+            transform: translateY(-2px);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .option-card:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(92, 106, 196, 0.1);
+        }
+        
+        .hero-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1566438480900-0609be27a4be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1394&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section py-16 mb-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">张掖旅行需求调查问卷</h1>
+            <p class="text-xl md:text-2xl">为您的家庭打造完美的张掖之旅</p>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 pb-16">
+        <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6 mb-8">
+            <p class="text-lg mb-6">亲爱的旅行者，感谢您选择前往美丽的张掖！为了给您和家人提供最适合的旅行计划，请花几分钟时间填写以下问卷。我们将根据您的偏好，为您量身定制一份完美的行程。</p>
+            
+            <form id="travelSurvey" class="space-y-8">
+                <!-- 旅行基本信息 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4 text-primary-color"><i class="fas fa-info-circle mr-2 text-primary-color"></i>旅行基本信息</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">计划出行日期</label>
+                        <input type="date" name="travelDate" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">计划停留天数</label>
+                        <select name="duration" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color" required>
+                            <option value="">请选择</option>
+                            <option value="2">2天</option>
+                            <option value="3">3天</option>
+                            <option value="4">4天</option>
+                            <option value="5">5天及以上</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- 人员情况 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fas fa-users mr-2 text-primary-color"></i>人员情况</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">每个家庭的成员数量</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="3" onclick="selectOption(this, 'familySize')">
+                                <h3 class="font-bold">3人家庭</h3>
+                                <p class="text-sm text-gray-600">父母+1个孩子</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="4" onclick="selectOption(this, 'familySize')">
+                                <h3 class="font-bold">4人家庭</h3>
+                                <p class="text-sm text-gray-600">父母+2个孩子</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="familySize" id="familySize">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">是否有老人同行？</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="yes" onclick="selectOption(this, 'hasElderly')">
+                                <h3 class="font-bold">是</h3>
+                                <p class="text-sm text-gray-600">有老人同行</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="no" onclick="selectOption(this, 'hasElderly')">
+                                <h3 class="font-bold">否</h3>
+                                <p class="text-sm text-gray-600">没有老人同行</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="hasElderly" id="hasElderly">
+                    </div>
+                    
+                    <div id="elderlyAgeGroup" class="mb-4 hidden">
+                        <label class="block text-gray-700 font-medium mb-2">老人年龄段</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="60-70" onclick="selectOption(this, 'elderlyAge')">
+                                <h3 class="font-bold">60-70岁</h3>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="70+" onclick="selectOption(this, 'elderlyAge')">
+                                <h3 class="font-bold">70岁以上</h3>
+                            </div>
+                        </div>
+                        <input type="hidden" name="elderlyAge" id="elderlyAge">
+                    </div>
+                </div>
+                
+                <!-- 旅游偏好 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fas fa-heart mr-2 text-primary-color"></i>旅游偏好</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">您最感兴趣的景点类型（可多选）</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="nature" onclick="toggleMultiOption(this, 'interestSpots')">
+                                <h3 class="font-bold">自然风光</h3>
+                                <p class="text-sm text-gray-600">如七彩丹霞、平山湖大峡谷</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="culture" onclick="toggleMultiOption(this, 'interestSpots')">
+                                <h3 class="font-bold">人文历史</h3>
+                                <p class="text-sm text-gray-600">如大佛寺、马蹄寺</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="folk" onclick="toggleMultiOption(this, 'interestSpots')">
+                                <h3 class="font-bold">民俗体验</h3>
+                                <p class="text-sm text-gray-600">如裕固族风情</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="interestSpots" id="interestSpots">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">旅行节奏偏好</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="relaxed" onclick="selectOption(this, 'travelPace')">
+                                <h3 class="font-bold">轻松悠闲</h3>
+                                <p class="text-sm text-gray-600">每天游览1-2个景点，有充分休息时间</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="intensive" onclick="selectOption(this, 'travelPace')">
+                                <h3 class="font-bold">紧凑充实</h3>
+                                <p class="text-sm text-gray-600">尽可能多地游览景点，充分利用时间</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="travelPace" id="travelPace">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">青少年特别活动偏好（可多选）</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="photography" onclick="toggleMultiOption(this, 'teenActivities')">
+                                <h3 class="font-bold">摄影活动</h3>
+                                <p class="text-sm text-gray-600">景点摄影比赛</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="outdoor" onclick="toggleMultiOption(this, 'teenActivities')">
+                                <h3 class="font-bold">户外活动</h3>
+                                <p class="text-sm text-gray-600">徒步、探险</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="cultural" onclick="toggleMultiOption(this, 'teenActivities')">
+                                <h3 class="font-bold">文化体验</h3>
+                                <p class="text-sm text-gray-600">民族文化交流</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="educational" onclick="toggleMultiOption(this, 'teenActivities')">
+                                <h3 class="font-bold">知识学习</h3>
+                                <p class="text-sm text-gray-600">地质知识、历史文化</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="teenActivities" id="teenActivities">
+                    </div>
+                </div>
+                
+                <!-- 住宿偏好 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fas fa-bed mr-2 text-primary-color"></i>住宿偏好</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">住宿类型偏好</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="hotel" onclick="selectOption(this, 'accommodationType')">
+                                <h3 class="font-bold">酒店</h3>
+                                <p class="text-sm text-gray-600">标准化服务，设施完善</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="guesthouse" onclick="selectOption(this, 'accommodationType')">
+                                <h3 class="font-bold">民宿</h3>
+                                <p class="text-sm text-gray-600">当地特色，家庭氛围</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="accommodationType" id="accommodationType">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">住宿预算（每晚/每间）</label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="economy" onclick="selectOption(this, 'accommodationBudget')">
+                                <h3 class="font-bold">经济型</h3>
+                                <p class="text-sm text-gray-600">200-300元</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="comfort" onclick="selectOption(this, 'accommodationBudget')">
+                                <h3 class="font-bold">舒适型</h3>
+                                <p class="text-sm text-gray-600">300-500元</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="luxury" onclick="selectOption(this, 'accommodationBudget')">
+                                <h3 class="font-bold">豪华型</h3>
+                                <p class="text-sm text-gray-600">500元以上</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="accommodationBudget" id="accommodationBudget">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">住宿位置偏好</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="city" onclick="selectOption(this, 'accommodationLocation')">
+                                <h3 class="font-bold">市区</h3>
+                                <p class="text-sm text-gray-600">便利设施多，交通便捷</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="scenic" onclick="selectOption(this, 'accommodationLocation')">
+                                <h3 class="font-bold">景区附近</h3>
+                                <p class="text-sm text-gray-600">靠近自然，环境优美</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="accommodationLocation" id="accommodationLocation">
+                    </div>
+                </div>
+                
+                <!-- 餐饮偏好 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fas fa-utensils mr-2 text-primary-color"></i>餐饮偏好</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">餐饮类型偏好（可多选）</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="local" onclick="toggleMultiOption(this, 'foodPreference')">
+                                <h3 class="font-bold">当地特色</h3>
+                                <p class="text-sm text-gray-600">体验甘肃特色美食</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="chinese" onclick="toggleMultiOption(this, 'foodPreference')">
+                                <h3 class="font-bold">中式正餐</h3>
+                                <p class="text-sm text-gray-600">传统中餐</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="fast" onclick="toggleMultiOption(this, 'foodPreference')">
+                                <h3 class="font-bold">快餐简餐</h3>
+                                <p class="text-sm text-gray-600">方便快捷</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="foodPreference" id="foodPreference">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">餐饮预算（每人每天）</label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="low" onclick="selectOption(this, 'foodBudget')">
+                                <h3 class="font-bold">经济型</h3>
+                                <p class="text-sm text-gray-600">50-100元</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="medium" onclick="selectOption(this, 'foodBudget')">
+                                <h3 class="font-bold">中等</h3>
+                                <p class="text-sm text-gray-600">100-150元</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="high" onclick="selectOption(this, 'foodBudget')">
+                                <h3 class="font-bold">高端</h3>
+                                <p class="text-sm text-gray-600">150元以上</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="foodBudget" id="foodBudget">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">是否有特殊饮食需求？</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="yes" onclick="selectOption(this, 'specialDiet')">
+                                <h3 class="font-bold">是</h3>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="no" onclick="selectOption(this, 'specialDiet')">
+                                <h3 class="font-bold">否</h3>
+                            </div>
+                        </div>
+                        <input type="hidden" name="specialDiet" id="specialDiet">
+                    </div>
+                    
+                    <div id="specialDietDetails" class="mb-4 hidden">
+                        <label class="block text-gray-700 font-medium mb-2">请说明特殊饮食需求</label>
+                        <textarea name="specialDietDetails" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color" rows="3" placeholder="例如：素食、过敏原、宗教禁忌等"></textarea>
+                    </div>
+                </div>
+                
+                <!-- 交通偏好 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fas fa-car mr-2 text-primary-color"></i>交通偏好</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">抵达张掖的交通方式</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="plane" onclick="selectOption(this, 'arrivalTransport')">
+                                <h3 class="font-bold">飞机</h3>
+                                <p class="text-sm text-gray-600">抵达张掖机场</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="train" onclick="selectOption(this, 'arrivalTransport')">
+                                <h3 class="font-bold">火车</h3>
+                                <p class="text-sm text-gray-600">抵达张掖站/张掖西站</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="car" onclick="selectOption(this, 'arrivalTransport')">
+                                <h3 class="font-bold">自驾</h3>
+                                <p class="text-sm text-gray-600">自驾前往张掖</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="bus" onclick="selectOption(this, 'arrivalTransport')">
+                                <h3 class="font-bold">长途汽车</h3>
+                                <p class="text-sm text-gray-600">抵达张掖汽车站</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="arrivalTransport" id="arrivalTransport">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">张掖当地交通偏好</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="rental" onclick="selectOption(this, 'localTransport')">
+                                <h3 class="font-bold">租车自驾</h3>
+                                <p class="text-sm text-gray-600">灵活便捷</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="taxi" onclick="selectOption(this, 'localTransport')">
+                                <h3 class="font-bold">出租车/网约车</h3>
+                                <p class="text-sm text-gray-600">随叫随到</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="public" onclick="selectOption(this, 'localTransport')">
+                                <h3 class="font-bold">公共交通</h3>
+                                <p class="text-sm text-gray-600">经济环保</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="chartered" onclick="selectOption(this, 'localTransport')">
+                                <h3 class="font-bold">包车服务</h3>
+                                <p class="text-sm text-gray-600">专业司机带路</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="localTransport" id="localTransport">
+                    </div>
+                </div>
+                
+                <!-- 其他需求 -->
+                <div class="form-section">
+                    <h2 class="text-2xl font-bold mb-4"><i class="fas fa-plus-circle mr-2 text-primary-color"></i>其他需求</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">是否需要导游服务？</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="option-card p-4 rounded-lg" data-value="yes" onclick="selectOption(this, 'needGuide')">
+                                <h3 class="font-bold">是</h3>
+                                <p class="text-sm text-gray-600">希望有专业导游讲解</p>
+                            </div>
+                            <div class="option-card p-4 rounded-lg" data-value="no" onclick="selectOption(this, 'needGuide')">
+                                <h3 class="font-bold">否</h3>
+                                <p class="text-sm text-gray-600">自行游览即可</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="needGuide" id="needGuide">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">是否有特殊需求或注意事项？</label>
+                        <textarea name="specialRequirements" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color" rows="3" placeholder="请填写您的特殊需求或注意事项，如行动不便、过敏情况等"></textarea>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="button" id="copyButton" class="btn-primary px-8 py-3 rounded-lg font-bold text-lg" onclick="copyFormData()">复制问卷答案到剪贴板</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 选择单选选项
+        function selectOption(element, fieldId) {
+            // 移除同组中所有选项的选中状态
+            const siblings = element.parentElement.querySelectorAll('.option-card');
+            siblings.forEach(sibling => {
+                sibling.classList.remove('selected');
+            });
+            
+            // 添加选中状态到当前选项
+            element.classList.add('selected');
+            
+            // 更新隐藏字段的值
+            document.getElementById(fieldId).value = element.getAttribute('data-value');
+            
+            // 特殊处理：老人选项
+            if (fieldId === 'hasElderly') {
+                const elderlyAgeGroup = document.getElementById('elderlyAgeGroup');
+                if (element.getAttribute('data-value') === 'yes') {
+                    elderlyAgeGroup.classList.remove('hidden');
+                } else {
+                    elderlyAgeGroup.classList.add('hidden');
+                    document.getElementById('elderlyAge').value = '';
+                }
+            }
+            
+            // 特殊处理：特殊饮食需求
+            if (fieldId === 'specialDiet') {
+                const specialDietDetails = document.getElementById('specialDietDetails');
+                if (element.getAttribute('data-value') === 'yes') {
+                    specialDietDetails.classList.remove('hidden');
+                } else {
+                    specialDietDetails.classList.add('hidden');
+                }
+            }
+        }
+        
+        // 选择多选选项
+        function toggleMultiOption(element, fieldId) {
+            // 切换选中状态
+            element.classList.toggle('selected');
+            
+            // 更新隐藏字段的值
+            const selectedOptions = Array.from(element.parentElement.querySelectorAll('.option-card.selected'))
+                .map(option => option.getAttribute('data-value'));
+            
+            document.getElementById(fieldId).value = selectedOptions.join(',');
+        }
+        
+        // 复制表单数据到剪贴板
+        function copyFormData() {
+            const form = document.getElementById('travelSurvey');
+            const formData = new FormData(form);
+            
+            let result = "张掖旅行需求调查问卷答案:\n\n";
+            
+            // 基本信息
+            result += "【旅行基本信息】\n";
+            result += `计划出行日期: ${formData.get('travelDate') || '未填写'}\n`;
+            result += `计划停留天数: ${formData.get('duration') || '未填写'}\n\n`;
+            
+            // 人员情况
+            result += "【人员情况】\n";
+            const familySize = formData.get('familySize');
+            result += `每个家庭的成员数量: ${familySize ? familySize + '人家庭' : '未选择'}\n`;
+            
+            const hasElderly = formData.get('hasElderly');
+            result += `是否有老人同行: ${hasElderly === 'yes' ? '是' : hasElderly === 'no' ? '否' : '未选择'}\n`;
+            
+            if (hasElderly === 'yes') {
+                const elderlyAge = formData.get('elderlyAge');
+                result += `老人年龄段: ${elderlyAge || '未选择'}\n`;
+            }
+            result += '\n';
+            
+            // 旅游偏好
+            result += "【旅游偏好】\n";
+            const interestSpots = formData.get('interestSpots');
+            result += `感兴趣的景点类型: ${interestSpots ? formatMultiChoice(interestSpots, {
+                'nature': '自然风光',
+                'culture': '人文历史',
+                'folk': '民俗体验'
+            }) : '未选择'}\n`;
+            
+            const travelPace = formData.get('travelPace');
+            result += `旅行节奏偏好: ${travelPace === 'relaxed' ? '轻松悠闲' : travelPace === 'intensive' ? '紧凑充实' : '未选择'}\n`;
+            
+            const teenActivities = formData.get('teenActivities');
+            result += `青少年特别活动偏好: ${teenActivities ? formatMultiChoice(teenActivities, {
+                'photography': '摄影活动',
+                'outdoor': '户外活动',
+                'cultural': '文化体验',
+                'educational': '知识学习'
+            }) : '未选择'}\n\n`;
+            
+            // 住宿偏好
+            result += "【住宿偏好】\n";
+            const accommodationType = formData.get('accommodationType');
+            result += `住宿类型偏好: ${accommodationType === 'hotel' ? '酒店' : accommodationType === 'guesthouse' ? '民宿' : '未选择'}\n`;
+            
+            const accommodationBudget = formData.get('accommodationBudget');
+            result += `住宿预算: ${accommodationBudget === 'economy' ? '经济型(200-300元)' : 
+                accommodationBudget === 'comfort' ? '舒适型(300-500元)' : 
+                accommodationBudget === 'luxury' ? '豪华型(500元以上)' : '未选择'}\n`;
+            
+            const accommodationLocation = formData.get('accommodationLocation');
+            result += `住宿位置偏好: ${accommodationLocation === 'city' ? '市区' : accommodationLocation === 'scenic' ? '景区附近' : '未选择'}\n\n`;
+            
+            // 餐饮偏好
+            result += "【餐饮偏好】\n";
+            const foodPreference = formData.get('foodPreference');
+            result += `餐饮类型偏好: ${foodPreference ? formatMultiChoice(foodPreference, {
+                'local': '当地特色',
+                'chinese': '中式正餐',
+                'fast': '快餐简餐'
+            }) : '未选择'}\n`;
+            
+            const foodBudget = formData.get('foodBudget');
+            result += `餐饮预算: ${foodBudget === 'low' ? '经济型(50-100元)' : 
+                foodBudget === 'medium' ? '中等(100-150元)' : 
+                foodBudget === 'high' ? '高端(150元以上)' : '未选择'}\n`;
+            
+            const specialDiet = formData.get('specialDiet');
+            result += `是否有特殊饮食需求: ${specialDiet === 'yes' ? '是' : specialDiet === 'no' ? '否' : '未选择'}\n`;
+            
+            if (specialDiet === 'yes') {
+                const specialDietDetails = formData.get('specialDietDetails');
+                result += `特殊饮食需求详情: ${specialDietDetails || '未填写'}\n`;
+            }
+            result += '\n';
+            
+            // 交通偏好
+            result += "【交通偏好】\n";
+            const arrivalTransport = formData.get('arrivalTransport');
+            result += `抵达张掖的交通方式: ${arrivalTransport === 'plane' ? '飞机' : 
+                arrivalTransport === 'train' ? '火车' : 
+                arrivalTransport === 'car' ? '自驾' : 
+                arrivalTransport === 'bus' ? '长途汽车' : '未选择'}\n`;
+            
+            const localTransport = formData.get('localTransport');
+            result += `张掖当地交通偏好: ${localTransport === 'rental' ? '租车自驾' : 
+                localTransport === 'taxi' ? '出租车/网约车' : 
+                localTransport === 'public' ? '公共交通' : 
+                localTransport === 'chartered' ? '包车服务' : '未选择'}\n\n`;
+            
+            // 其他需求
+            result += "【其他需求】\n";
+            const needGuide = formData.get('needGuide');
+            result += `是否需要导游服务: ${needGuide === 'yes' ? '是' : needGuide === 'no' ? '否' : '未选择'}\n`;
+            
+            const specialRequirements = formData.get('specialRequirements');
+            result += `特殊需求或注意事项: ${specialRequirements || '无'}\n`;
+            
+            // 复制到剪贴板
+            navigator.clipboard.writeText(result).then(() => {
+                const copyButton = document.getElementById('copyButton');
+                copyButton.textContent = '复制成功！';
+                copyButton.classList.remove('btn-primary');
+                copyButton.classList.add('btn-secondary');
+                
+                setTimeout(() => {
+                    copyButton.textContent = '复制问卷答案到剪贴板';
+                    copyButton.classList.remove('btn-secondary');
+                    copyButton.classList.add('btn-primary');
+                }, 2000);
+            });
+        }
+        
+        // 格式化多选选项
+        function formatMultiChoice(value, options) {
+            if (!value) return '';
+            
+            return value.split(',').map(key => options[key] || key).join('、');
+        }
+    </script>
+</body>
+</html>

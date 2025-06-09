@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张掖旅行计划</title>
+  <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-100-M/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  <style>
+    :root {
+      --primary-color: #e63946;
+      --secondary-color: #457b9d;
+      --accent-color: #f1faee;
+      --dark-color: #1d3557;
+      --light-color: #a8dadc;
+      --gradient-start: #e63946;
+      --gradient-end: #f1faee;
+    }
+    
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      color: #333;
+      background-color: #f8f9fa;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Noto Serif SC', serif;
+    }
+    
+    .hero {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://store.is.autonavi.com/showpic/c37b88e9971d8f915db0fa2d503465c1');
+      background-size: cover;
+      background-position: center;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+    
+    .card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background: var(--primary-color);
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2rem;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      height: 1rem;
+      width: 1rem;
+      border-radius: 50%;
+      background: var(--primary-color);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .badge-secondary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+    
+    .badge-accent {
+      background-color: var(--accent-color);
+      color: var(--dark-color);
+    }
+    
+    .map-container {
+      height: 400px;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    }
+    
+    .section-title {
+      position: relative;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 50px;
+      background: var(--primary-color);
+    }
+    
+    .icon-box {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .icon-box i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-right: 1rem;
+      min-width: 1.5rem;
+    }
+    
+    .day-card {
+      border-left: 4px solid var(--primary-color);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .highlight {
+      background-color: rgba(230, 57, 70, 0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    
+    .table-container {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    
+    .alert-info {
+      background-color: #e6f7ff;
+      border-left: 4px solid #1890ff;
+    }
+    
+    .alert-warning {
+      background-color: #fffbe6;
+      border-left: 4px solid #faad14;
+    }
+    
+    .alert-danger {
+      background-color: #fff2f0;
+      border-left: 4px solid #ff4d4f;
+    }
+    
+    .weather-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+    
+    .weather-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .price-tag {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+    
+    .nav-pills {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .nav-pill {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      margin-right: 0.5rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .nav-pill.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .nav-pill:not(.active) {
+      background-color: #e2e8f0;
+      color: #4a5568;
+    }
+    
+    .nav-pill:not(.active):hover {
+      background-color: #cbd5e0;
+    }
+    
+    @media (max-width: 640px) {
+      .hero {
+        height: 40vh;
+      }
+      
+      .timeline {
+        padding-left: 1.5rem;
+      }
+      
+      .timeline-item::before {
+        left: -1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 英雄区域 -->
+  <div class="hero">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">张掖旅行计划</h1>
+      <p class="text-xl md:text-2xl">2024年6月15日 - 2024年6月18日</p>
+      <p class="text-lg mt-2">一家三口的精彩旅程</p>
+    </div>
+  </div>
+  
+  <!-- 主要内容 -->
+  <div class="container mx-auto px-4 py-8">
+    <!-- 行程概览 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">行程概览</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="card bg-white p-4">
+          <div class="flex items-center mb-2">
+            <i class="fas fa-calendar-day text-xl text-red-500 mr-2"></i>
+            <h3 class="font-bold">第1天 (6月15日)</h3>
+          </div>
+          <p>抵达张掖，游览大佛寺</p>
+          <div class="mt-2 flex flex-wrap">
+            <span class="badge badge-primary mr-1 mb-1">文化</span>
+            <span class="badge badge-secondary mr-1 mb-1">历史</span>
+          </div>
+        </div>
+        
+        <div class="card bg-white p-4">
+          <div class="flex items-center mb-2">
+            <i class="fas fa-calendar-day text-xl text-red-500 mr-2"></i>
+            <h3 class="font-bold">第2天 (6月16日)</h3>
+          </div>
+          <p>七彩丹霞一日游</p>
+          <div class="mt-2 flex flex-wrap">
+            <span class="badge badge-primary mr-1 mb-1">自然风光</span>
+            <span class="badge badge-secondary mr-1 mb-1">摄影</span>
+          </div>
+        </div>
+        
+        <div class="card bg-white p-4">
+          <div class="flex items-center mb-2">
+            <i class="fas fa-calendar-day text-xl text-red-500 mr-2"></i>
+            <h3 class="font-bold">第3天 (6月17日)</h3>
+          </div>
+          <p>马蹄寺一日游</p>
+          <div class="mt-2 flex flex-wrap">
+            <span class="badge badge-primary mr-1 mb-1">文化</span>
+            <span class="badge badge-secondary mr-1 mb-1">宗教</span>
+          </div>
+        </div>
+        
+        <div class="card bg-white p-4">
+          <div class="flex items-center mb-2">
+            <i class="fas fa-calendar-day text-xl text-red-500 mr-2"></i>
+            <h3 class="font-bold">第4天 (6月18日)</h3>
+          </div>
+          <p>平山湖大峡谷，返程</p>
+          <div class="mt-2 flex flex-wrap">
+            <span class="badge badge-primary mr-1 mb-1">自然风光</span>
+            <span class="badge badge-secondary mr-1 mb-1">探险</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 天气信息 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">天气预报</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="weather-card">
+          <div class="weather-icon"><i class="fas fa-sun"></i></div>
+          <h3 class="font-bold">6月15日</h3>
+          <p>晴朗</p>
+          <p>温度: 15°C - 28°C</p>
+          <p>风向: 西北风</p>
+          <p>风力: 3-4级</p>
+        </div>
+        
+        <div class="weather-card">
+          <div class="weather-icon"><i class="fas fa-sun"></i></div>
+          <h3 class="font-bold">6月16日</h3>
+          <p>晴朗</p>
+          <p>温度: 16°C - 29°C</p>
+          <p>风向: 西北风</p>
+          <p>风力: 3-4级</p>
+        </div>
+        
+        <div class="weather-card">
+          <div class="weather-icon"><i class="fas fa-sun"></i></div>
+          <h3 class="font-bold">6月17日</h3>
+          <p>晴朗</p>
+          <p>温度: 17°C - 30°C</p>
+          <p>风向: 西北风</p>
+          <p>风力: 3-4级</p>
+        </div>
+        
+        <div class="weather-card">
+          <div class="weather-icon"><i class="fas fa-sun"></i></div>
+          <h3 class="font-bold">6月18日</h3>
+          <p>晴朗</p>
+          <p>温度: 18°C - 31°C</p>
+          <p>风向: 西北风</p>
+          <p>风力: 3-4级</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 详细行程 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">详细行程安排</h2>
+      
+      <!-- 第1天 -->
+      <div class="day-card">
+        <h3 class="text-xl font-bold mb-4">第1天 (6月15日) - 抵达张掖，游览大佛寺</h3>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">12:00</span>
+              <span class="text-gray-600">抵达张掖</span>
+            </div>
+            <p>抵达张掖火车站/机场，乘坐出租车前往酒店</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">13:00 - 14:00</span>
+              <span class="text-gray-600">酒店办理入住</span>
+            </div>
+            <p>入住酒店，稍作休息</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">14:30 - 17:00</span>
+              <span class="text-gray-600">游览大佛寺</span>
+            </div>
+            <p>参观张掖大佛寺，欣赏中国最大的室内卧佛</p>
+            <div class="highlight">
+              <p><i class="fas fa-info-circle text-blue-500 mr-2"></i> <strong>大佛寺信息：</strong></p>
+              <p>地址：<a href="https://uri.amap.com/marker?position=100.456298,38.930715" target="_blank" class="text-blue-500 hover:underline">张掖市甘州区大佛寺巷64号</a></p>
+              <p>开放时间：08:30 - 18:00</p>
+              <p>门票：预计30-40元/人</p>
+              <p>特色：中国最大的室内卧佛，历史悠久的佛教寺庙</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">17:30 - 19:00</span>
+              <span class="text-gray-600">晚餐</span>
+            </div>
+            <p>在市区品尝当地特色美食，如河西走廊羊肉、张掖炒面片等</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">19:30</span>
+              <span class="text-gray-600">返回酒店休息</span>
+            </div>
+            <p>返回酒店休息，为第二天的行程做准备</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第2天 -->
+      <div class="day-card">
+        <h3 class="text-xl font-bold mb-4">第2天 (6月16日) - 七彩丹霞一日游</h3>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">07:00 - 08:00</span>
+              <span class="text-gray-600">早餐</span>
+            </div>
+            <p>在酒店享用早餐</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">08:30 - 09:30</span>
+              <span class="text-gray-600">前往七彩丹霞景区</span>
+            </div>
+            <p>从张掖市区出发，驱车约40公里前往七彩丹霞景区</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">09:30 - 16:00</span>
+              <span class="text-gray-600">游览七彩丹霞景区</span>
+            </div>
+            <p>游览世界著名的地质奇观七彩丹霞，欣赏绚丽多彩的山丘景观</p>
+            <div class="highlight">
+              <p><i class="fas fa-info-circle text-blue-500 mr-2"></i> <strong>七彩丹霞景区信息：</strong></p>
+              <p>地址：<a href="https://uri.amap.com/marker?position=100.062804,38.972010" target="_blank" class="text-blue-500 hover:underline">张掖市临泽县倪家营镇南台村</a></p>
+              <p>开放时间：06:00 - 18:00（深度游游客提前1小时，即17:00截止入园）</p>
+              <p>门票：75元/人</p>
+              <p>特色：世界地质公园，国家5A级景区，彩色丘陵与丹霞地貌的高度复合区</p>
+              <p>建议游览时间：5-6小时</p>
+              <p>景区内交通：需要乘坐景区观光车游览各个观景台</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">16:00 - 17:00</span>
+              <span class="text-gray-600">返回市区</span>
+            </div>
+            <p>结束游览，返回张掖市区</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">17:30 - 19:00</span>
+              <span class="text-gray-600">晚餐</span>
+            </div>
+            <p>在市区享用晚餐</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">19:30</span>
+              <span class="text-gray-600">返回酒店休息</span>
+            </div>
+            <p>返回酒店休息，为第三天的行程做准备</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第3天 -->
+      <div class="day-card">
+        <h3 class="text-xl font-bold mb-4">第3天 (6月17日) - 马蹄寺一日游</h3>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">07:00 - 08:00</span>
+              <span class="text-gray-600">早餐</span>
+            </div>
+            <p>在酒店享用早餐</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">08:30 - 10:00</span>
+              <span class="text-gray-600">前往马蹄寺</span>
+            </div>
+            <p>从张掖市区出发，驱车约60公里前往马蹄寺景区</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">10:00 - 16:00</span>
+              <span class="text-gray-600">游览马蹄寺景区</span>
+            </div>
+            <p>参观石窟寺庙群，欣赏独特的佛教艺术和壮观的自然风光</p>
+            <div class="highlight">
+              <p><i class="fas fa-info-circle text-blue-500 mr-2"></i> <strong>马蹄寺景区信息：</strong></p>
+              <p>地址：<a href="https://uri.amap.com/marker?position=100.416624,38.484258" target="_blank" class="text-blue-500 hover:underline">张掖市肃南裕固族自治县马蹄藏族自治乡</a></p>
+              <p>开放时间：08:30 - 18:00</p>
+              <p>门票：66元/人</p>
+              <p>特色：集石窟艺术、宗教文化、自然风光于一体的旅游胜地</p>
+              <p>建议游览时间：4-5小时</p>
+              <p>注意事项：景区海拔较高，台阶较多，需注意防晒和补水</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">16:00 - 17:30</span>
+              <span class="text-gray-600">返回市区</span>
+            </div>
+            <p>结束游览，返回张掖市区</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">18:00 - 19:30</span>
+              <span class="text-gray-600">晚餐</span>
+            </div>
+            <p>在市区享用晚餐</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">20:00</span>
+              <span class="text-gray-600">返回酒店休息</span>
+            </div>
+            <p>返回酒店休息，为第四天的行程做准备</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第4天 -->
+      <div class="day-card">
+        <h3 class="text-xl font-bold mb-4">第4天 (6月18日) - 平山湖大峡谷，返程</h3>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">07:00 - 08:00</span>
+              <span class="text-gray-600">早餐与退房</span>
+            </div>
+            <p>在酒店享用早餐，办理退房手续</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">08:30 - 10:00</span>
+              <span class="text-gray-600">前往平山湖大峡谷</span>
+            </div>
+            <p>从张掖市区出发，驱车约60公里前往平山湖大峡谷景区</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">10:00 - 14:00</span>
+              <span class="text-gray-600">游览平山湖大峡谷</span>
+            </div>
+            <p>探索壮观的峡谷地貌，欣赏奇特的自然风光</p>
+            <div class="highlight">
+              <p><i class="fas fa-info-circle text-blue-500 mr-2"></i> <strong>平山湖大峡谷信息：</strong></p>
+              <p>地址：<a href="https://uri.amap.com/marker?position=100.830488,39.165658" target="_blank" class="text-blue-500 hover:underline">张掖市肃南裕固族自治县平山湖村附近</a></p>
+              <p>开放时间：7:30开园，基础游18:00停票（17:30以后不能下峡谷），深度游17:00停票，峡谷入口17:30锁门</p>
+              <p>门票：100元/人</p>
+              <p>特色：AAAA级景区，壮观的峡谷地貌，奇特的自然风光</p>
+              <p>建议游览时间：3-4小时</p>
+              <p>注意事项：景区内有一定的徒步路线，建议穿舒适的鞋子</p>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">14:00 - 15:30</span>
+              <span class="text-gray-600">返回市区</span>
+            </div>
+            <p>结束游览，返回张掖市区</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">16:00 - 17:00</span>
+              <span class="text-gray-600">晚餐</span>
+            </div>
+            <p>在市区享用晚餐</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="flex justify-between mb-1">
+              <span class="font-bold">18:00</span>
+              <span class="text-gray-600">前往火车站/机场</span>
+            </div>
+            <p>乘坐出租车前往火车站/机场，结束愉快的张掖之旅</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 交通信息 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">交通信息</h2>
+      
+      <div class="card bg-white p-6 mb-6">
+        <h3 class="text-xl font-bold mb-4">市内交通</h3>
+        
+        <div class="icon-box">
+          <i class="fas fa-taxi"></i>
+          <div>
+            <h4 class="font-bold">出租车</h4>
+            <p>张掖市区内出租车起步价约8元，市区内一般不超过20元</p>
+          </div>
+        </div>
+        
+        <div class="icon-box">
+          <i class="fas fa-bus"></i>
+          <div>
+            <h4 class="font-bold">公交车</h4>
+            <p>张掖市区内有多条公交线路，票价1-2元</p>
+          </div>
+        </div>
+        
+        <div class="icon-box">
+          <i class="fas fa-car"></i>
+          <div>
+            <h4 class="font-bold">包车</h4>
+            <p>建议包车前往各景点，一日包车价格约300-500元</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card bg-white p-6">
+        <h3 class="text-xl font-bold mb-4">景点间交通</h3>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>路线</th>
+                <th>距离</th>
+                <th>预计时间</th>
+                <th>交通方式</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>张掖市区 → 大佛寺</td>
+                <td>市区内</td>
+                <td>10分钟</td>
+                <td>出租车/步行</td>
+              </tr>
+              <tr>
+                <td>张掖市区 → 七彩丹霞</td>
+                <td>约40公里</td>
+                <td>约50分钟</td>
+                <td>包车/旅游专线车</td>
+              </tr>
+              <tr>
+                <td>张掖市区 → 马蹄寺</td>
+                <td>约60公里</td>
+                <td>约1小时15分钟</td>
+                <td>包车/旅游专线车</td>
+              </tr>
+              <tr>
+                <td>张掖市区 → 平山湖大峡谷</td>
+                <td>约60公里</td>
+                <td>约1小时</td>
+                <td>包车/旅游专线车</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 住宿与餐饮 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">住宿与餐饮</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card bg-white p-6">
+          <h3 class="text-xl font-bold mb-4">推荐住宿</h3>
+          
+          <div class="mb-4 pb-4 border-b border-gray-200">
+            <h4 class="font-bold">张掖市区舒适型酒店</h4>
+            <p class="text-gray-600 mb-2">预算：300-500元/晚</p>
+            <p>位于市中心，交通便利，设施齐全</p>
+            <p class="mt-2">推荐区域：甘州区市中心，靠近大佛寺、甘州公园等景点</p>
+          </div>
+          
+          <div class="mb-4 pb-4 border-b border-gray-200">
+            <h4 class="font-bold">七彩丹霞景区附近民宿</h4>
+            <p class="text-gray-600 mb-2">预算：200-400元/晚</p>
+            <p>靠近七彩丹霞景区，环境优美，可欣赏自然风光</p>
+            <p class="mt-2">适合想要早起看日出的游客</p>
+          </div>
+          
+          <div class="alert alert-info">
+            <p><i class="fas fa-info-circle mr-2"></i> 建议提前预订住宿，特别是在旅游旺季（5-10月）</p>
+          </div>
+        </div>
+        
+        <div class="card bg-white p-6">
+          <h3 class="text-xl font-bold mb-4">推荐餐饮</h3>
+          
+          <div class="mb-4 pb-4 border-b border-gray-200">
+            <h4 class="font-bold">当地特色美食</h4>
+            <ul class="list-disc pl-5 mt-2">
+              <li>河西走廊羊肉</li>
+              <li>张掖炒面片</li>
+              <li>裕固族奶茶</li>
+              <li>酿皮子</li>
+              <li>浆水面</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4 pb-4 border-b border-gray-200">
+            <h4 class="font-bold">推荐餐厅</h4>
+            <ul class="list-disc pl-5 mt-2">
+              <li>祁连羊肉馆（玉水街店）</li>
+              <li>李二姐大锅台总店</li>
+              <li>王掌柜木桶鱼</li>
+            </ul>
+          </div>
+          
+          <div class="alert alert-warning">
+            <p><i class="fas fa-exclamation-triangle mr-2"></i> 景区内餐饮价格较高，建议携带一些零食和水</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 实用信息 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">实用信息</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card bg-white p-6">
+          <h3 class="text-xl font-bold mb-4">紧急联系电话</h3>
+          
+          <div class="icon-box">
+            <i class="fas fa-ambulance"></i>
+            <div>
+              <h4 class="font-bold">急救电话</h4>
+              <p>120</p>
+            </div>
+          </div>
+          
+          <div class="icon-box">
+            <i class="fas fa-shield-alt"></i>
+            <div>
+              <h4 class="font-bold">报警电话</h4>
+              <p>110</p>
+            </div>
+          </div>
+          
+          <div class="icon-box">
+            <i class="fas fa-fire-extinguisher"></i>
+            <div>
+              <h4 class="font-bold">火警电话</h4>
+              <p>119</p>
+            </div>
+          </div>
+          
+          <div class="icon-box">
+            <i class="fas fa-hospital"></i>
+            <div>
+              <h4 class="font-bold">张掖市人民医院</h4>
+              <p>0936-8222222</p>
+            </div>
+          </div>
+          
+          <div class="icon-box">
+            <i class="fas fa-info-circle"></i>
+            <div>
+              <h4 class="font-bold">张掖旅游咨询</h4>
+              <p>0936-8212318</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card bg-white p-6">
+          <h3 class="text-xl font-bold mb-4">注意事项</h3>
+          
+          <div class="alert alert-info mb-4">
+            <p><i class="fas fa-sun mr-2"></i> <strong>防晒与补水</strong></p>
+            <p>张掖地区阳光强烈，昼夜温差大，请做好防晒措施，多补充水分</p>
+          </div>
+          
+          <div class="alert alert-info mb-4">
+            <p><i class="fas fa-mountain mr-2"></i> <strong>高原反应</strong></p>
+            <p>张掖海拔约1500米，部分景区海拔更高，可能会有轻微高原反应，请适当休息</p>
+          </div>
+          
+          <div class="alert alert-info mb-4">
+            <p><i class="fas fa-hiking mr-2"></i> <strong>着装建议</strong></p>
+            <p>建议穿着舒适的运动鞋和轻便衣物，带上外套应对早晚温差</p>
+          </div>
+          
+          <div class="alert alert-warning">
+            <p><i class="fas fa-exclamation-triangle mr-2"></i> <strong>景区保护</strong></p>
+            <p>请遵守景区规定，不要触摸或破坏景区内的自然景观和文物</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card bg-white p-6 mt-6">
+        <h3 class="text-xl font-bold mb-4">行李清单提醒</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <h4 class="font-bold mb-2">必备物品</h4>
+            <ul class="list-disc pl-5">
+              <li>身份证/护照</li>
+              <li>现金/银行卡</li>
+              <li>手机/充电器</li>
+              <li>酒店预订信息</li>
+              <li>常用药品</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-bold mb-2">户外装备</h4>
+            <ul class="list-disc pl-5">
+              <li>防晒霜/太阳镜</li>
+              <li>帽子/遮阳伞</li>
+              <li>舒适运动鞋</li>
+              <li>轻便外套</li>
+              <li>保温水杯</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-bold mb-2">其他建议</h4>
+            <ul class="list-disc pl-5">
+              <li>相机/手机（拍照）</li>
+              <li>湿巾/纸巾</li>
+              <li>零食/水果</li>
+              <li>小型背包</li>
+              <li>充电宝</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 景点地图 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">景点地图</h2>
+      <div id="map" class="map-container"></div>
+    </section>
+    
+    <!-- 预算摘要 -->
+    <section class="mb-12">
+      <h2 class="section-title text-2xl font-bold">预算摘要</h2>
+      
+      <div class="card bg-white p-6">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>项目</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>总计</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>住宿（三星级酒店）</td>
+                <td>约350元/晚</td>
+                <td>3晚</td>
+                <td>约1050元</td>
+              </tr>
+              <tr>
+                <td>七彩丹霞门票</td>
+                <td>75元/人</td>
+                <td>3人</td>
+                <td>225元</td>
+              </tr>
+              <tr>
+                <td>马蹄寺门票</td>
+                <td>66元/人</td>
+                <td>3人</td>
+                <td>198元</td>
+              </tr>
+              <tr>
+                <td>大佛寺门票</td>
+                <td>约40元/人（估计）</td>
+                <td>3人</td>
+                <td>约120元</td>
+              </tr>
+              <tr>
+                <td>平山湖大峡谷门票</td>
+                <td>100元/人</td>
+                <td>3人</td>
+                <td>300元</td>
+              </tr>
+              <tr>
+                <td>餐饮</td>
+                <td>约100元/人/天</td>
+                <td>3人×4天</td>
+                <td>约1200元</td>
+              </tr>
+              <tr>
+                <td>交通（包车）</td>
+                <td>约400元/天</td>
+                <td>3天</td>
+                <td>约1200元</td>
+              </tr>
+              <tr>
+                <td>市内交通</td>
+                <td>约100元/天</td>
+                <td>4天</td>
+                <td>约400元</td>
+              </tr>
+              <tr>
+                <td>其他开销</td>
+                <td>约200元/人</td>
+                <td>3人</td>
+                <td>约600元</td>
+              </tr>
+              <tr class="font-bold">
+                <td>总计</td>
+                <td></td>
+                <td></td>
+                <td>约5293元</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="alert alert-info mt-4">
+          <p><i class="fas fa-info-circle mr-2"></i> 以上预算为估计值，实际花费可能会有所不同</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <h3 class="text-xl font-bold mb-2">张掖旅行计划</h3>
+          <p>2024年6月15日 - 2024年6月18日</p>
+        </div>
+        
+        <div>
+          <p>祝您旅途愉快！</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    // 初始化地图
+    document.addEventListener('DOMContentLoaded', function() {
+      var map = L.map('map').setView([38.8, 100.4], 9);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      
+      // 添加景点标记
+      var attractions = [
+        {name: '张掖大佛寺', lat: 38.930715, lng: 100.456298},
+        {name: '七彩丹霞景区', lat: 38.972010, lng: 100.062804},
+        {name: '马蹄寺', lat: 38.484258, lng: 100.416624},
+        {name: '平山湖大峡谷', lat: 39.165658, lng: 100.830488},
+        {name: '张掖市中心', lat: 38.93, lng: 100.45}
+      ];
+      
+      attractions.forEach(function(attraction) {
+        var marker = L.marker([attraction.lat, attraction.lng]).addTo(map);
+        marker.bindTooltip(attraction.name, {permanent: true, direction: 'top', offset: [0, -10]});
+      });
+    });
+  </script>
+</body>
+</html>
